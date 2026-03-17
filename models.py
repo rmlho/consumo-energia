@@ -41,6 +41,14 @@ def validar_faixa(numero, minimo, maximo):
     else :
         return False
     
+
+def formatar_nome(nome):
+    nome = nome.strip()
+    nome = nome.capitalize()
+    return nome
+
+
+    
 #E essa função caso o usuário digite um valor em horas nada faz, mas se digita em minutos converte em horas
 #Um exemplo de como ficaria a variavel: tempo_uso_horas = converter_minutos(30, 'min'), trazendo a função
 
