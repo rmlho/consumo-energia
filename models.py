@@ -47,7 +47,9 @@ def formatar_nome(nome):
     nome = nome.capitalize()
     return nome
 
-
+def equipamento_para_string(equipamento):
+    texto = f"{equipamento['nome']} | {equipamento['potencia_w']}W | {equipamento['tempo_uso_horas']}h" 
+    return texto
     
 #E essa função caso o usuário digite um valor em horas nada faz, mas se digita em minutos converte em horas
 #Um exemplo de como ficaria a variavel: tempo_uso_horas = converter_minutos(30, 'min'), trazendo a função
