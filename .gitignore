@@ -1,0 +1,18 @@
+# Venv
+venv/
+.venv/
+
+# Cache Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Variáveis de ambiente
+.env
+
+# IDEs
+.vscode/
+.idea/
+
+# Logs
+*.log

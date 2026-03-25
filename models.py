@@ -10,12 +10,13 @@ def criar_equipamento(nome, potencia_w, tempo_uso_horas):
     return equipamento
 
 
-def criar_registro(equipamento, tempo_uso_horas, consumo_kWh, custo):
+def criar_registro(equipamento, tempo_uso_horas, consumo_kWh, custo, classificacao):
     registro = {
         'equipamento': equipamento,
         'tempo_uso_horas': tempo_uso_horas,
         'consumo_kWh': consumo_kWh,
-        'custo': custo
+        'custo': custo,
+        'classificacao': classificacao
     }
     return registro
 
