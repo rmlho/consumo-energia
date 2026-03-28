@@ -29,6 +29,7 @@ def classificar_consumo(consumo_kWh):
             return "MODERADO"
         
 def adicionar_registro(nome, potencia_w, tempo_uso_horas):
+    nome = formatar_nome(nome)
     consumo_kWh_calculado = calcular_consumo(potencia_w, tempo_uso_horas)
     custo_calculado = calcular_custo(consumo_kWh_calculado)
 
@@ -69,19 +70,28 @@ def total_custo(lista_registros):
     return soma_total_custo
 
 def equipamento_mais_consumiu(lista_dos_rankings):
-    equipamento_maior_consumo = lista_dos_rankings[0]
+    if not lista_dos_rankings:
+        equipamento_maior_consumo = lista_dos_rankings[0]
+        return None
+    
+    else :
+        equipamento_maior_consumo = lista_dos_rankings[0]
 
-    return equipamento_maior_consumo
+        return equipamento_maior_consumo
 
 def listar_equipamentos(lista_registros):
     for registros in lista_registros:
         print(equipamento_para_string(registros['equipamento']))
 
 def gerar_relatorio(lista_registros, lista_dos_rankings):
+    if not lista_registros:
+        print("Nenhum registro encontrado.")
+        return
+    
     print(f"Total de registros: {len(lista_registros)}")
     print(f"O total de consumo foi {total_consumo(lista_registros)} kWh.")
     print(f"O total de custo foi R${total_custo(lista_registros)}.")
-    print(f"O quipamento que mais consumiu foi {equipamento_mais_consumiu(lista_dos_rankings)['equipamento']['nome']}.")
+    print(f"O equipamento que mais consumiu foi {equipamento_mais_consumiu(lista_dos_rankings)['equipamento']['nome']}.")
     
     for i, registro in enumerate(lista_dos_rankings):
         print(f"{i+1}. {registro['equipamento']['nome']} - {registro['consumo_kWh']} kWh")
