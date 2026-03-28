@@ -72,3 +72,16 @@ def equipamento_mais_consumiu(lista_dos_rankings):
     equipamento_maior_consumo = lista_dos_rankings[0]
 
     return equipamento_maior_consumo
+
+def listar_equipamentos(lista_registros):
+    for registros in lista_registros:
+        print(equipamento_para_string(registros['equipamento']))
+
+def gerar_relatorio(lista_registros, lista_dos_rankings):
+    print(f"Total de registros: {len(lista_registros)}")
+    print(f"O total de consumo foi {total_consumo(lista_registros)} kWh.")
+    print(f"O total de custo foi R${total_custo(lista_registros)}.")
+    print(f"O quipamento que mais consumiu foi {equipamento_mais_consumiu(lista_dos_rankings)['equipamento']['nome']}.")
+    
+    for i, registro in enumerate(lista_dos_rankings):
+        print(f"{i+1}. {registro['equipamento']['nome']} - {registro['consumo_kWh']} kWh")
