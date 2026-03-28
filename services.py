@@ -48,3 +48,27 @@ def buscar_equipamento(nome):
             return registro
  
     return None
+
+def gerar_ranking(lista_registros):
+    lista_dos_rankings = sorted(lista_registros, key= lambda registros: registros['consumo_kWh'], reverse=True)
+    
+    return lista_dos_rankings
+
+def total_consumo(lista_registros):
+    soma_total_consumo = 0
+    for registros in lista_registros:
+        soma_total_consumo += registros['consumo_kWh']
+
+    return soma_total_consumo
+
+def total_custo(lista_registros):
+    soma_total_custo = 0
+    for registros in lista_registros:
+        soma_total_custo += registros['custo']
+
+    return soma_total_custo
+
+def equipamento_mais_consumiu(lista_dos_rankings):
+    equipamento_maior_consumo = lista_dos_rankings[0]
+
+    return equipamento_maior_consumo
