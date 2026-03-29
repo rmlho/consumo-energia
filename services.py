@@ -71,12 +71,10 @@ def total_custo(lista_registros):
 
 def equipamento_mais_consumiu(lista_dos_rankings):
     if not lista_dos_rankings:
-        equipamento_maior_consumo = lista_dos_rankings[0]
         return None
     
     else :
         equipamento_maior_consumo = lista_dos_rankings[0]
-
         return equipamento_maior_consumo
 
 def listar_equipamentos(lista_registros):

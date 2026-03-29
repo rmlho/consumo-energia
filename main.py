@@ -3,3 +3,5 @@
 from services import *
 from models import *
 
+import rich
+
