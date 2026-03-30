@@ -5,11 +5,13 @@ from models import *
 
 from rich.console import Console
 from rich.panel import Panel
+from rich.table import Table
 
 console = Console()
 
 def exibir_menu():
     console.print(Panel(":light_bulb: [bold blue]CONSUMO DE ENERGIA DOMÉSTICA[/] ||",title="MENU", style="bold cyan"))
+    console.print()
     console.print("[blue]>> Selecione uma opção:[/]")
     console.print("[blue][1][/] Cadastrar equipamento")
     console.print("[blue][2][/] Registrar uso")
@@ -17,6 +19,7 @@ def exibir_menu():
     console.print("[blue][4][/] Ver ranking de consumo")
     console.print("[blue][5][/] Gerar relatório")
     console.print("[red][0] sair[/]")
+    console.print()
 
 def iniciar_sistema():
     rodando = True
@@ -46,11 +49,11 @@ def iniciar_sistema():
                     if opcao == 4:
                         ranking = gerar_ranking(lista_registros)
                         for i, r in enumerate(ranking):
-                            print(f"{i+1}. {r['equipamento']['nome']} - {r['consumo_kWh']} kWh")
+                            console.print(f"[bold]{i+1}. {r['equipamento']['nome']} - {r['consumo_kWh']} kWh[/]")
 
                     else :
                         if opcao == 5:
-                            menu_relatorio()
+                            mostrar_relatorio()
 
                         else :
                             if opcao == 0:
@@ -72,7 +75,7 @@ def exibir_mensagem(texto, type="info"):
             console.print(f":orange_circle: [bold yellow]{texto}[/]")
 
 def menu_cadastrar_equipamento():
-    console.print("\n - CADASTRAR O EQUIPAMENTO -[/]")
+    console.print("\n[bold blue] - CADASTRAR O EQUIPAMENTO -[/]")
 
     nome = input("Nome do equipamento: ")
     if not validar_texto(nome):
@@ -104,10 +107,10 @@ def menu_cadastrar_equipamento():
         return
 
     novo_registro = adicionar_registro(nome, potencia_w, tempo_uso_horas)
-    exibir_mensagem(f"Equipamento '{novo_registro['equipamento']['nome']}' cadastrado com sucesso!", "sucesso")
+    exibir_mensagem(f"Equipamento {novo_registro['equipamento']['nome']} cadastrado com sucesso!", "sucesso")
 
 def menu_registrar_uso():
-    console.print("\n - REGISTRAR USO -[/]")
+    console.print("\n[bold blue] - REGISTRAR USO -[/]")
 
     nome = input("Nome do equipamento já cadastrado: ")
     registro_existente = buscar_equipamento(nome)
@@ -142,12 +145,41 @@ def menu_registrar_uso():
     )
 
 
-def menu_relatorio():
-    console.print("\n[bold cyan]--- RELATÓRIO ---[/]")
+def mostrar_relatorio():
+    console.print()
+    console.print(Panel("[bold blue]Relatório final[/]", style="bold cyan"))
 
     if not lista_registros:
         exibir_mensagem("Nenhum registro encontrado.", "erro")
         return
 
     ranking = gerar_ranking(lista_registros)
-    gerar_relatorio(lista_registros, ranking)
+    maior_consumo = equipamento_mais_consumiu(ranking)
+
+    resumo = Table(show_header=False, box=None)
+    resumo.add_row("[bold cyan]Total de registros:[/]", str(len(lista_registros)))
+    resumo.add_row("[bold cyan]Consumo total:[/]", f"{total_consumo(lista_registros):.2f} kWh")
+    resumo.add_row("[bold cyan]Custo total:[/]", f"R$ {total_custo(lista_registros):.2f}")
+    resumo.add_row("[bold cyan]Equipamento que mais consumiu:[/]", maior_consumo["equipamento"]["nome"])
+
+    console.print(resumo)
+    console.print()
+    console.print("[bold green]Top consumidores:[/]")
+
+    for i, registro in enumerate(ranking):
+        classificacao = registro['classificacao']
+
+        if classificacao == "ALTO":
+            cor = "green"
+
+        else :
+            if classificacao == "MODERADO":
+                cor = "yellow"
+
+            else :
+                cor = "red"
+
+        console.print(f"[cyan]{i+1}.[/] {registro['equipamento']['nome']} - {registro['consumo_kWh']:.3f} kWh | R$ {registro['custo']:.2f} | [bold {cor}]{classificacao}[/]")
+
+if __name__ == "__main__":
+    iniciar_sistema()
