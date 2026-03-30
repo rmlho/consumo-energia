@@ -10,7 +10,7 @@ from rich.table import Table
 console = Console()
 
 def exibir_menu():
-    console.print(Panel(":light_bulb: [bold blue]CONSUMO DE ENERGIA DOMÉSTICA[/] ||",title="MENU", style="bold cyan"))
+    console.print(Panel(":light_bulb: [bold blue]CONSUMO DE ENERGIA DOMÉSTICA[/] ||\n[dim green]:zap:Tarifa Energisa PB: R$ 0,67/kWh[/]",title="MENU", style="bold cyan"))
     console.print()
     console.print("[blue]>> Selecione uma opção:[/]")
     console.print("[blue][1][/] Cadastrar equipamento")
