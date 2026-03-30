@@ -50,8 +50,7 @@ def iniciar_sistema():
 
                     else :
                         if opcao == 5:
-                            ranking = gerar_ranking(lista_registros)
-                            gerar_relatorio(lista_registros, ranking)
+                            menu_relatorio()
 
                         else :
                             if opcao == 0:
@@ -72,3 +71,83 @@ def exibir_mensagem(texto, type="info"):
         else :
             console.print(f":orange_circle: [bold yellow]{texto}[/]")
 
+def menu_cadastrar_equipamento():
+    console.print("\n - CADASTRAR O EQUIPAMENTO -[/]")
+
+    nome = input("Nome do equipamento: ")
+    if not validar_texto(nome):
+        exibir_mensagem("Nome inválido.", "erro")
+        return
+
+    try:
+        potencia_w = float(input("Potência do equipamento (W): "))
+        if not validar_numero_positivo(potencia_w):
+            exibir_mensagem("Potência deve ser maior que zero.", "erro")
+            return
+    except ValueError:
+        exibir_mensagem("Valor inválido para potência.", "erro")
+        return
+
+    try:
+        unidade = input("Informe a unidade do tempo de uso (h/min): ").strip().lower()
+        tempo_valor = float(input("Tempo de uso: "))
+        tempo_uso_horas = converter_minutos(tempo_valor, unidade)
+
+        if tempo_uso_horas is None:
+            exibir_mensagem("Unidade inválida. Use 'h' ou 'min'.", "erro")
+            return
+        if not validar_numero_positivo(tempo_uso_horas):
+            exibir_mensagem("Tempo deve ser maior que zero.", "erro")
+            return
+    except ValueError:
+        exibir_mensagem("Valor inválido para tempo.", "erro")
+        return
+
+    novo_registro = adicionar_registro(nome, potencia_w, tempo_uso_horas)
+    exibir_mensagem(f"Equipamento '{novo_registro['equipamento']['nome']}' cadastrado com sucesso!", "sucesso")
+
+def menu_registrar_uso():
+    console.print("\n - REGISTRAR USO -[/]")
+
+    nome = input("Nome do equipamento já cadastrado: ")
+    registro_existente = buscar_equipamento(nome)
+
+    if registro_existente is None:
+        exibir_mensagem("Equipamento não encontrado.", "erro")
+        return
+
+    try:
+        unidade = input("Informe a unidade do tempo de uso (h/min): ").strip().lower()
+        tempo_valor = float(input("Tempo de uso: "))
+        tempo_uso_horas = converter_minutos(tempo_valor, unidade)
+
+        if tempo_uso_horas is None:
+            exibir_mensagem("Unidade inválida. Use 'h' ou 'min'.", "erro")
+            return
+        if not validar_numero_positivo(tempo_uso_horas):
+            exibir_mensagem("Tempo deve ser maior que zero.", "erro")
+            return
+    except ValueError:
+        exibir_mensagem("Valor inválido para tempo.", "erro")
+        return
+
+    equipamento = registro_existente['equipamento']
+    novo_registro = adicionar_registro(equipamento['nome'], equipamento['potencia_w'], tempo_uso_horas)
+
+    exibir_mensagem(
+        f"Uso registrado! Consumo: {novo_registro['consumo_kWh']:.3f} kWh | "
+        f"Custo: R${novo_registro['custo']:.2f} | "
+        f"Classificação: {novo_registro['classificacao']}",
+        "sucesso"
+    )
+
+
+def menu_relatorio():
+    console.print("\n[bold cyan]--- RELATÓRIO ---[/]")
+
+    if not lista_registros:
+        exibir_mensagem("Nenhum registro encontrado.", "erro")
+        return
+
+    ranking = gerar_ranking(lista_registros)
+    gerar_relatorio(lista_registros, ranking)
