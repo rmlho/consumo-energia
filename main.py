@@ -31,7 +31,7 @@ def iniciar_sistema():
             opcao = int(input("Escolha uma opção: "))
 
         except ValueError:
-            console.print(":cross_mark: Valor inválido, digite um nímero")
+            console.print(":cross_mark: Valor inválido, digite um número")
             continue
 
         if opcao == 1:
